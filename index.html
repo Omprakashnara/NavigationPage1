@@ -3,78 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css"> <!-- Make sure your CSS file is correctly linked -->
+    <link rel="stylesheet" href="style.css"> <!-- Assuming your styles are correctly linked -->
     <title>Combined Navigation and Dark Mode Components</title>
     <style>
-        /* Additional styling for the Google Map container */
-        #map {
-            height: 400px; /* or any other height */
-            width: 100%; /* Responsive width */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+            Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
+        .searchstyle {
+            display: flex;
         }
-
-        .switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
+        .wstyle {
+            background-color: #04AA6D;
+            text-align: center;
+            color: white;
+            border-radius: 10%;
+            border-color: green;
+            padding: 1%;
+            margin-top: 3px;
+            margin-left: 40%;
             cursor: pointer;
+        }
+        .wstyle:hover {
+            background-color: #07aa04;
+        }
+        body.light-mode {
+            background-color: #fff;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #10171d;
+            color: #dfdfdf;
+            .navbar {
+                background-color: #1b2938;
+            }
+            .dark-mode-toggle > button {
+                color: #999;
+                &:last-child {
+                    color: lightblue;
+                }
+            }
+            .map-container {
+                filter: invert(1); /* Apply filter for dark mode */
+            }
+        }
+        .navbar {
+            position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
+            width: 100%;
+            display: flex;
+            background-color: #95d3ff;
+            padding: 20px;
         }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
+        .content {
+            padding: 20px;
+            margin: 0 auto;
+            margin-top: 60px;
+            max-width: 600px;
+            font-size: 20px;
+            line-height: 1.3em;
+            h1 {
+                font-size: 2rem;
+            }
+            img {
+                width: 100%;
+            }
+            code {
+                background-color: #cbe9ff;
+                border-radius: 2px;
+                font-size: 1em;
+                padding: 0 5px;
+            }
+            a {
+                text-decoration: none;
+                color: #006688;
+            }
+            button {
+                color: #006688;
+                background-color: transparent;
+                border: none;
+                font-size: 1em;
+                padding: 0;
+            }
         }
-
-        input:checked + .slider {
-            background-color: #2196F3;
+        body.dark-mode .content code {
+            background-color: #1b2938;
         }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
+        body.dark-mode .content a {
+            color: #ee09;
         }
-
-        .slider.round {
-            border-radius: 34px;
+        body.dark-mode .content button {
+            color: #ee09;
         }
-
-        .slider.round:before {
-            border-radius: 50%;
+        .dark-mode-toggle {
+            display: flex;
+            margin: 0 auto;
+            margin-right: 30px;
+            & > button {
+                font-size: 1.2em;
+                background: none;
+                border: none;
+                color: #ffe600;
+                cursor: pointer;
+                transition: color 0.3s ease;
+                &:last-child {
+                    color: #666;
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+        .toggle-control {
+            position: relative;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+        }
+        input[type='checkbox'].dmcheck {
+            width: 40px;
+            height: 10px;
+            background: #555;
+            position: relative;
+            border-radius: 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            vertical-align: 2px;
+            outline: none;
+            &:checked + label {
+                left: 30px;
+            }
+            &:focus-visible {
+                outline: solid 2px white;
+            }
+            & + label {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                position: absolute;
+                left: 2px;
+                background: #fff;
+                opacity: 0.9;
+                background-color: #f6f6f6;
+            }
         }
     </style>
 </head>
 <body>
     <div id="app">
+        <div class="navbar">Navigation Bar</div>
         <!-- Dark Mode Toggle -->
         <div class="dark-mode-toggle">
             <button type="button" onclick="alert('Enable light mode');">
                 ☀
             </button>
             <label class="switch">
-                <input type="checkbox" onchange="alert('Toggle dark mode');">
+                <input type="checkbox" class="dmcheck" onchange="document.body.classList.toggle('dark-mode');">
                 <span class="slider round"></span>
             </label>
             <button type="button" onclick="alert('Enable dark mode');">
@@ -86,12 +178,8 @@
         <div>
             <span>
                 Dark Mode is <code>disabled</code>. Turn it
-                <button onclick="alert('Toggle dark mode');">on</button>.
+                <button onclick="document.body.classList.toggle('dark-mode');">on</button>.
             </span>
-            <label class="switch">
-                <input type="checkbox" onchange="alert('Toggle dark mode again');">
-                <span class="slider round"></span>
-            </label>
         </div>
 
         <!-- Map and Directions Content -->
